@@ -9,16 +9,20 @@ e.g: UUU: [0][0][0]
      CUU: [1][0][0]
      CAU: [1][2][0]
 
-[[UUU,UUC,UUA,UUG][UCU,UCC,UCA,UCG][,,,][,,,]]
-[[CUU,,,][,,,][,,,][,,,]]
-[[,,,][,,,][,,,][,,,]]
-[[,,,][,,,][,,,][,,,]]
+[[UUU,UUC,UUA,UUG][UCU,UCC,UCA,UCG][UAU,UAC,UAA,UAG][UGU,UGC,UGA,UGG]]
+[[CUU,CUC,CUA,CUG][CCU,CCC,CCA,CCG][CAU,CAC,CAA,CAG][,,,]]
+[[AUU,AUC,AUA,AUG][ACU,ACC,ACA,ACG][,,,][,,,]]
+[[GUU,GUC,GUA,GUG][,,,][,,,][,,,]]
+
+I had another system for accessing them at different nitrogen bases combinations.
+However, the system I had in mind had an undesirable complexity.
 '''
 
 #Examples
 dna_seq = "ATGTGGCCAGTCAUUUGA"
 dna_seq2 = "AUGUUUCCCGGGAAAGAUCUG"
 
+#Amino acids and their shorts
 amino_acids = {
     "Ala":"Alanine",
     "Cys":"Cysteine",
@@ -44,6 +48,8 @@ amino_acids = {
 }
 
 #I wrote this off of my head lmao
+#This is basically a table.
+#Refer to the first comment block to know how it's organized
 genetic_code = [[
                    ["Phe","Phe","Leu","Leu"],
                    ["Ser"]*4,
@@ -66,9 +72,11 @@ genetic_code = [[
                    ["Gly"]*4
                ]]
 
+#While DNA have Thymine (DNA is composed of T,C,A and G) while RNA have Uracile (RNA is composed of U,C,A and G)
 def dnaTOrna(dna):
     return dna.replace("T","U")
 
+#To neatly pick from the genetic code table, letters are turned into numbers
 def UCAGtoNUM(seq):
     seq = seq.replace("U","0")
     seq = seq.replace("C","1")
@@ -76,6 +84,12 @@ def UCAGtoNUM(seq):
     seq = seq.replace("G","3")
     return seq
 
+'''
+Convert each three consequetive nitrogen bases
+Example: UUU -> Phenylalanine
+
+Refer to the giant comment block at the start for more details on how this system works
+'''
 def rnaTOpp(rnaIN):
     pp = []
     rna = UCAGtoNUM(rnaIN)
@@ -90,19 +104,25 @@ def rnaTOpp(rnaIN):
             break
     return pp
 
+#Print the polypeptide chain with the short names for amino acids
 def printPP(pp):
     for i in range(len(pp)):
         print(pp[i] + "" if len(pp)==(i + 1) else pp[i] + " - ", end="")
 
+#Ditto, with the full name of amino acids
 def printFull(pp):
     for i in range(len(pp)):
         print(amino_acids[pp[i]] + "" if len(pp)==(i + 1) else amino_acids[pp[i]] + " + ", end="")
 
 
+#First, convert the DNA sequence to RNAm then to polypeptide chain
 PP = rnaTOpp(dnaTOrna(dna_seq))
+#Print the DNA sequence
 print(dna_seq)
+#Print the polypeptide chain with short names
 printPP(PP)
 print("")
+#Ditto, but with full
 printFull(PP)
 
 print("")
